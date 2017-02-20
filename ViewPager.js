@@ -101,7 +101,7 @@ var ViewPager = React.createClass({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         let sgs = new SimpleGesture(e,gestureState)
-        if(sgs.isLongSwipeLeft() || sgs.isLongSwipeRight()) {
+        if(sgs.isSwipeLeft() || sgs.isSwipeRight()) {
           if (this.props.locked !== true && !this.fling) {
             this.props.hasTouch && this.props.hasTouch(true);
             return true;
