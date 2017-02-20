@@ -131,9 +131,9 @@ var ViewPager = React.createClass({
   },
 
   /* Detect horizontal swipe but with a range of 20 dx points */
-  isHorizontalSwipe(dx, dy) {
-      const dx = Math.abs(dx);
-      const dy = Math.abs(dy);
+  isHorizontalSwipe(_dx, _dy) {
+      const dx = Math.abs(_dx);
+      const dy = Math.abs(_dy);
       return dx > dy && dx > 20;
   },
 
