@@ -1,5 +1,7 @@
 'use strict';
 
+import SimpleGesture from 'react-native-simple-gesture'
+
 var React = require('react');
 var { PropTypes } = React;
 
@@ -98,10 +100,9 @@ var ViewPager = React.createClass({
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
-        if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
+        let sgs = new SimpleGesture(e,gestureState)
+        if(sgs.isLongSwipeLeft() || sgs.isLongSwipeRight()) {
+          if (this.props.locked !== true && !this.fling) {
             this.props.hasTouch && this.props.hasTouch(true);
             return true;
           }
