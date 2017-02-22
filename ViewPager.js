@@ -44,6 +44,7 @@ var ViewPager = React.createClass({
     initialPage: PropTypes.number,
     distanceThreshold: PropTypes.number,
     velocityThreshold: PropTypes.number,
+    minimumSwipeDistance: PropTypes.number,
   },
 
   fling: false,
@@ -54,6 +55,7 @@ var ViewPager = React.createClass({
       locked: false,
       distanceThreshold: 0.5,
       velocityThreshold: 1e-6,
+      minimumSwipeDistance: 20,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -130,11 +132,10 @@ var ViewPager = React.createClass({
     }
   },
 
-  /* Detect horizontal swipe but with a range of 20 dx points */
   isHorizontalSwipe(_dx, _dy) {
       const dx = Math.abs(_dx);
       const dy = Math.abs(_dy);
-      return dx > dy && dx > 20;
+      return dx > dy && dx > this.props.minimumSwipeDistance;
   },
 
   componentDidMount() {
