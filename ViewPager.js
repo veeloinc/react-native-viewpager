@@ -42,6 +42,9 @@ var ViewPager = React.createClass({
     autoPlay: PropTypes.bool,
     animation: PropTypes.func,
     initialPage: PropTypes.number,
+    distanceThreshold: PropTypes.number,
+    velocityThreshold: PropTypes.number,
+    minimumSwipeDistance: PropTypes.number,
   },
 
   fling: false,
@@ -50,6 +53,9 @@ var ViewPager = React.createClass({
     return {
       isLoop: false,
       locked: false,
+      distanceThreshold: 0.5,
+      velocityThreshold: 1e-6,
+      minimumSwipeDistance: 20,
       animation: function(animate, toValue, gs) {
         return Animated.spring(animate,
           {
@@ -78,9 +84,11 @@ var ViewPager = React.createClass({
           vx = gestureState.vx;
 
       var step = 0;
-      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -1e-6)) {
+      if (relativeGestureDistance < -this.props.distanceThreshold
+          || (relativeGestureDistance < 0 && vx <= -this.props.velocityThreshold)) {
         step = 1;
-      } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 1e-6)) {
+      } else if (relativeGestureDistance > this.props.distanceThreshold
+          || (relativeGestureDistance > 0 && vx >= this.props.velocityThreshold)) {
         step = -1;
       }
 
@@ -92,10 +100,8 @@ var ViewPager = React.createClass({
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
-        if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (/* (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && */
-                this.props.locked !== true && !this.fling) {
+        if (this.isHorizontalSwipe(gestureState.dx, gestureState.dy)) {
+          if (this.props.locked !== true && !this.fling) {
             this.props.hasTouch && this.props.hasTouch(true);
             return true;
           }
@@ -124,6 +130,12 @@ var ViewPager = React.createClass({
         this.goToPage(initialPage, false);
       }
     }
+  },
+
+  isHorizontalSwipe(_dx, _dy) {
+      const dx = Math.abs(_dx);
+      const dy = Math.abs(_dy);
+      return dx > dy && dx > this.props.minimumSwipeDistance;
   },
 
   componentDidMount() {
