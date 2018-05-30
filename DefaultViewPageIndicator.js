@@ -11,6 +11,7 @@ var {
   Animated,
 } = ReactNative;
 var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 
 var deviceWidth = Dimensions.get('window').width;
 var DOT_SIZE = 6;
@@ -47,7 +48,7 @@ var styles = StyleSheet.create({
   },
 });
 
-var DefaultViewPageIndicator = React.createClass({
+var DefaultViewPageIndicator = createClass({
   propTypes: {
     goToPage: PropTypes.func,
     activePage: PropTypes.number,
