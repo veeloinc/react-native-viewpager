@@ -48,7 +48,7 @@ var styles = StyleSheet.create({
   },
 });
 
-var DefaultViewPageIndicator = createClass({
+var DefaultViewPageIndicator = createReactClass({
   propTypes: {
     goToPage: PropTypes.func,
     activePage: PropTypes.number,
