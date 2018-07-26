@@ -30,4 +30,7 @@ project.xcworkspace
 
 # node.js
 #
+node_modules/
+
+#
 npm-debug.log
